@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <html lang="en">
-      <body className="bg-white text-gray-900 relative">
+      <body className=" text-gray-900 relative">
         {loading && <PageLoader />}
         {children}
       </body>

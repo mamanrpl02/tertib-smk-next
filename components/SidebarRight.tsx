@@ -1,6 +1,6 @@
 export default function SidebarRight() {
   return (
-    <aside className="hidden lg:block w-72 bg-white border-l p-3 overflow-y-auto">
+    <aside className="hidden lg:block w-72 bg-white border border-gray-200 p-3 overflow-y-auto">
       <h2 className="font-semibold text-sm mb-3">Peringkat Pelanggaran Per Jurusan</h2>
 
       <div className="space-y-3">
