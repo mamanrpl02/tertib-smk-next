@@ -1,28 +1,24 @@
 import "./globals.css";
-import Sidebar from "@/components/sidebar";
-import Topbar from "@/components/topbar";
-import RightPanel from "@/components/rightpanel";
 
-export default function RootLayout() {
+export const metadata = {
+  title: "Tertib SMK",
+  description: "Landingpage aplikasi",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="id">
-      <body className="flex min-h-screen bg-gray-100">
-        {/* Sidebar */}
-        <Sidebar />
-
-        {/* Main Area */}
-        <main className="flex-1 flex flex-col">
-          {/* Topbar */}
-          <Topbar />
-
-          {/* Tengah kosong, hanya RightPanel */}
-          <div className="flex flex-1">
-            <div className="flex-1 p-4"> {/* bisa kasih konten default di sini */}             
-            </div>
-            <RightPanel />
-          </div>
-        </main>
-      </body>
+    <html lang="en">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+        />
+      </head>
+      <body className="bg-white text-gray-900">{children}</body>
     </html>
   );
 }
