@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 type Siswa = {
   id: number;
   nama: string;
@@ -66,23 +69,45 @@ const dataSiswa: Siswa[] = [
 ];
 
 export default function PeringkatPage() {
+  const [filter, setFilter] = useState<"plus" | "minus" | "all">("all");
+
+  const filteredData = dataSiswa.filter((siswa) => {
+    if (filter === "plus") return siswa.poin >= 50;
+    if (filter === "minus") return siswa.poin < 50;
+    return true;
+  });
+
   return (
     <main className="flex-1 overflow-y-auto p-6 space-y-4 pb-48 bg-gray-50">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Peringkat Siswa</h2>
         <div className="flex gap-2">
-          <button className="px-3 py-1 text-sm rounded bg-green-100 text-green-700 hover:bg-green-200 transition">
-            Positif
+          <button
+            onClick={() => setFilter("plus")}
+            className={`px-3 py-1 text-sm rounded transition ${
+              filter === "plus"
+                ? "bg-green-500 text-white"
+                : "bg-green-100 text-green-700 hover:bg-green-200"
+            }`}
+          >
+            <i className="bi bi-hand-thumbs-up"></i>
           </button>
-          <button className="px-3 py-1 text-sm rounded bg-red-100 text-red-700 hover:bg-red-200 transition">
-            Negatif
+          <button
+            onClick={() => setFilter("minus")}
+            className={`px-3 py-1 text-sm rounded transition ${
+              filter === "minus"
+                ? "bg-red-500 text-white"
+                : "bg-red-100 text-red-700 hover:bg-red-200"
+            }`}
+          >
+            <i className="bi bi-hand-thumbs-down"></i>
           </button>
         </div>
       </div>
 
       {/* List siswa */}
-      {dataSiswa.map((siswa) => (
+      {filteredData.map((siswa) => (
         <div
           key={siswa.id}
           className="flex items-center bg-white p-3 rounded-lg shadow"
