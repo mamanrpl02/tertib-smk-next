@@ -1,24 +1,26 @@
+"use client";
+
 import "./globals.css";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import PageLoader from "@/components/PageLoader";
 
-export const metadata = {
-  title: "Tertib SMK",
-  description: "Landingpage aplikasi",
-};
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [loading, setLoading] = useState(false);
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 600); // lama animasi 0.6s
+    return () => clearTimeout(timer);
+  }, [pathname]);
+
   return (
     <html lang="en">
-      <head>
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-        />
-      </head>
-      <body className="bg-white text-gray-900">{children}</body>
+      <body className=" text-gray-900 relative">
+        {loading && <PageLoader />}
+        {children}
+      </body>
     </html>
   );
 }

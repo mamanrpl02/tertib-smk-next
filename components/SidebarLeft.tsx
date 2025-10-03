@@ -1,24 +1,39 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function SidebarLeft() {
+  const pathname = usePathname();
+
+  const menus = [
+    { href: "/siswa/beranda", label: "Beranda", icon: "bi-house-fill" },
+    { href: "/siswa/riwayat", label: "Riwayat", icon: "bi-bookmark-fill" },
+    { href: "/siswa/peringkat", label: "Peringkat", icon: "bi-bar-chart-fill" },
+    { href: "/siswa/tata-tertib", label: "Tata Tertib", icon: "bi-journal-bookmark-fill" },
+    { href: "/siswa/saya", label: "Saya", icon: "bi-person-fill" },
+  ];
+
   return (
-    <aside className="hidden md:block bg-white w-64 p-4 border-r overflow-y-auto">
+    <aside className="hidden md:block bg-white w-64 p-4 border border-gray-300 overflow-y-auto">
       <nav className="space-y-2">
-        <Link href="/siswa/beranda" className="block px-3 py-2 rounded hover:bg-gray-200">
-          <i className="bi bi-house-fill"></i> Beranda
-        </Link>
-        <Link href="/siswa/riwayat" className="block px-3 py-2 rounded hover:bg-gray-200">
-          <i className="bi bi-bookmark-fill"></i> Riwayat
-        </Link>
-        <Link href="/siswa/peringkat" className="block px-3 py-2 rounded hover:bg-gray-200">
-          <i className="bi bi-bar-chart-fill"></i> Peringkat
-        </Link>
-        <Link href="/siswa/tata-tertib" className="block px-3 py-2 rounded hover:bg-gray-200">
-          <i className="bi bi-journal-bookmark-fill"></i> Tata Tertib
-        </Link>
-        <Link href="/siswa/saya" className="block px-3 py-2 rounded hover:bg-gray-200">
-          <i className="bi bi-person-fill"></i> Saya
-        </Link>
+        {menus.map((menu) => {
+          const isActive = pathname.startsWith(menu.href);
+          return (
+            <Link
+              key={menu.href}
+              href={menu.href}
+              className={`flex items-center px-3 py-2 rounded-lg font-medium transition ${
+                isActive
+                  ? "bg-blue-600 text-white shadow-md"
+                  : "text-gray-700 hover:bg-gray-100 hover:text-blue-600"
+              }`}
+            >
+              <i className={`bi ${menu.icon} mr-2`} />
+              {menu.label}
+            </Link>
+          );
+        })}
       </nav>
     </aside>
   );
