@@ -3,7 +3,10 @@ import { HandThumbsUp, HandThumbsDown, Link } from "react-bootstrap-icons";
 
 export default function TukarPoinPage() {
   return (
-    <>
+    <main
+      className="flex-1 overflow-y-auto p-6 space-y-4 pb-48 relative"
+      id="mainContent"
+    >
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Tukar Poin</h2>
@@ -30,9 +33,8 @@ export default function TukarPoinPage() {
       <div className="px-2">
         <div className="text mt-2">
           <p className="text-gray-600 text-sm">
-            Setiap <span className="font-semibold">5 Poin Positif</span> dapat
-            ditukar untuk menghapus{" "}
-            <span className="font-semibold">1 Poin Negatif</span>.
+            Setiap <span className="font-semibold">5 Poin Positif</span> dapat ditukar
+            untuk menghapus <span className="font-semibold">1 Poin Negatif</span>.
           </p>
         </div>
 
@@ -52,6 +54,6 @@ export default function TukarPoinPage() {
           </Link>
         </div>
       </div>
-    </>
+    </main>
   );
 }
