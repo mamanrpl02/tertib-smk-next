@@ -19,7 +19,7 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src="https://i.pravatar.cc/150?img=12"
+            src="/maman.jpg"
             alt="Foto Profil"
             className="w-28 h-28 rounded-full object-cover border"
           />

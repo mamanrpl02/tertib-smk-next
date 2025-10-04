@@ -11,7 +11,7 @@ export default function Topbar() {
         <div className="flex items-center gap-3">
           <span className="hidden md:block font-medium">Hello, Maman</span>
           <img
-            src="https://via.placeholder.com/32"
+            src="/maman.jpg"
             alt="Profile"
             className="w-8 h-8 rounded-full border"
           />
