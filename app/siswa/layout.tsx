@@ -19,7 +19,8 @@ export default function SiswaLayout({
         <SidebarLeft />
         <main
           id="mainContent"
-          className="flex-1 overflow-y-auto p-6 space-y-6 relative"
+          className="flex-1 overflow-y-auto p-6 space-y-6 relative scrollbar-thin scrollbar-thumb-gray-300/60 scrollbar-track-transparent 
+  hover:scrollbar-thumb-gray-400/70 scrollbar-thumb-rounded-full transition-all duration-300 backdrop-blur-sm pb-48"
         >
           {children}
         </main>

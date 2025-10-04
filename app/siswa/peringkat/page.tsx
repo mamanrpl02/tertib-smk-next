@@ -78,7 +78,7 @@ export default function PeringkatPage() {
   });
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 space-y-4 pb-48 bg-gray-50">
+    <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Peringkat Siswa</h2>
@@ -130,6 +130,6 @@ export default function PeringkatPage() {
           </span>
         </div>
       ))}
-    </main>
+    </>
   );
 }

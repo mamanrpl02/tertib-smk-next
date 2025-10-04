@@ -5,10 +5,7 @@ import { CameraFill, PencilSquare } from "react-bootstrap-icons";
 
 export default function ProfilPage() {
   return (
-    <main
-      className="flex-1 overflow-y-auto p-6 space-y-4 relative pb-48"
-      id="mainContent"
-    >
+    <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Profil Saya</h2>
@@ -161,7 +158,8 @@ export default function ProfilPage() {
         </div>
 
         <p className="text-gray-500 text-sm text-center">
-          Perubahan mengenai data diatas yang tidak bisa diubah silahkan hubungi wali kelas
+          Perubahan mengenai data diatas yang tidak bisa diubah silahkan hubungi
+          wali kelas
         </p>
 
         {/* Tombol */}
@@ -174,6 +172,6 @@ export default function ProfilPage() {
           </Link>
         </div>
       </form>
-    </main>
+    </>
   );
 }

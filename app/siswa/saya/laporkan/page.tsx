@@ -19,7 +19,7 @@ export default function Page() {
   };
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 space-y-6 relative pb-48 bg-gray-50">
+    <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Laporkan Siswa</h2>
@@ -146,6 +146,6 @@ export default function Page() {
           </button>
         </div>
       </form>
-    </main>
+    </>
   );
 }

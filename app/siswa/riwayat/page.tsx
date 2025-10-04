@@ -11,6 +11,12 @@ export default function RiwayatPage() {
     { id: 2, name: "Rizky", kelas: "X-B RPL", poin: -30 },
     { id: 3, name: "Budi", kelas: "X-B RPL", poin: 50 },
     { id: 4, name: "Siti", kelas: "X-B RPL", poin: -20 },
+    { id: 5, name: "Budi", kelas: "X-B RPL", poin: 50 },
+    { id: 6, name: "Siti", kelas: "X-B RPL", poin: -20 },
+    { id: 7, name: "Budi", kelas: "X-B RPL", poin: 50 },
+    { id: 8, name: "Siti", kelas: "X-B RPL", poin: -20 },
+    { id: 9, name: "Budi", kelas: "X-B RPL", poin: 50 },
+    { id: 10, name: "Siti", kelas: "X-B RPL", poin: -20 },
   ];
 
   const filteredData = data.filter((item) => {
@@ -20,7 +26,7 @@ export default function RiwayatPage() {
   });
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 space-y-4 pb-48">
+    <>
       {/* Header + Filter */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-semibold">Poin Anda</h2>
@@ -74,6 +80,6 @@ export default function RiwayatPage() {
           </span>
         </div>
       ))}
-    </main>
+    </>
   );
 }
