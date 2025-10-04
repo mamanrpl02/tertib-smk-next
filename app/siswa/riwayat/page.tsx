@@ -26,7 +26,7 @@ export default function RiwayatPage() {
         <h2 className="text-xl font-semibold">Poin Anda</h2>
         <div className="flex gap-2">
           <button
-            onClick={() => setFilter("positive")}
+            onClick={() => setFilter("positive")} 
             className={`px-3 py-1 text-sm rounded flex items-center gap-1 transition ${
               filter === "positive"
                 ? "bg-green-600 text-white"

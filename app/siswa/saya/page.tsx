@@ -60,7 +60,7 @@ export default function ProfilPage() {
         </Link>
 
         {/* Riwayat Poin */}
-        <a
+        <Link
           href="/siswa/riwayat"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
@@ -69,11 +69,11 @@ export default function ProfilPage() {
             <span className="font-medium">Riwayat Poin</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
 
         {/* Tukar Poin */}
-        <a
-          href="/siswa/tukar-poin"
+        <Link
+          href="/siswa/saya/tukar-poin"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
           <div className="flex items-center gap-3">
@@ -81,11 +81,11 @@ export default function ProfilPage() {
             <span className="font-medium">Tukar Poin</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
 
         {/* Pengaturan */}
-        <a
-          href="/siswa/pengaturan"
+        <Link
+          href="/siswa/saya/pengaturan"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
           <div className="flex items-center gap-3">
@@ -93,7 +93,7 @@ export default function ProfilPage() {
             <span className="font-medium">Pengaturan</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
       </div>
     </main>
   );

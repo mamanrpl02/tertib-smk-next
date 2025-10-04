@@ -134,7 +134,7 @@ export default function Page() {
         <div className="flex justify-between">
           <Link
             href="/siswa/saya"
-            className="flex items-center gap-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition text-sm"
+            className="flex items-center gap-2 bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 hover:text-white transition text-sm"
           >
             <ArrowLeft size={16}/> Kembali
           </Link>
