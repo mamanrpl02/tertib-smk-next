@@ -1,14 +1,10 @@
 "use client";
-import { HandThumbsUp, HandThumbsDown, ShieldCheck, FileEarmarkText, ChevronRight, Gear } from "react-bootstrap-icons";
+import { FileEarmarkText, ChevronRight } from "react-bootstrap-icons";
 import Link from "next/link";
-
 
 export default function ProfilPage() {
   return (
-    <main
-      className="flex-1 overflow-y-auto p-6 space-y-4 pb-48 relative bg-gray-50"
-      id="mainContent"
-    >
+    <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Profil Saya</h2>
@@ -60,7 +56,7 @@ export default function ProfilPage() {
         </Link>
 
         {/* Riwayat Poin */}
-        <a
+        <Link
           href="/siswa/riwayat"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
@@ -69,11 +65,11 @@ export default function ProfilPage() {
             <span className="font-medium">Riwayat Poin</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
 
         {/* Tukar Poin */}
-        <a
-          href="/siswa/tukar-poin"
+        <Link
+          href="/siswa/saya/tukar-poin"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
           <div className="flex items-center gap-3">
@@ -81,11 +77,11 @@ export default function ProfilPage() {
             <span className="font-medium">Tukar Poin</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
 
         {/* Pengaturan */}
-        <a
-          href="/siswa/pengaturan"
+        <Link
+          href="/siswa/saya/pengaturan"
           className="flex items-center justify-between bg-white p-4 rounded-lg shadow hover:bg-gray-50 transition"
         >
           <div className="flex items-center gap-3">
@@ -93,8 +89,8 @@ export default function ProfilPage() {
             <span className="font-medium">Pengaturan</span>
           </div>
           <i className="bi bi-chevron-right text-gray-400"></i>
-        </a>
+        </Link>
       </div>
-    </main>
+    </>
   );
 }

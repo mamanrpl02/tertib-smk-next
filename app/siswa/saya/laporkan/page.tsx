@@ -19,7 +19,7 @@ export default function Page() {
   };
 
   return (
-    <main className="flex-1 overflow-y-auto p-6 space-y-6 relative pb-48 bg-gray-50">
+    <>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-xl font-bold">Laporkan Siswa</h2>
@@ -134,7 +134,7 @@ export default function Page() {
         <div className="flex justify-between">
           <Link
             href="/siswa/saya"
-            className="flex items-center gap-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition text-sm"
+            className="flex items-center gap-2 bg-gray-300 text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-400 hover:text-white transition text-sm"
           >
             <ArrowLeft size={16}/> Kembali
           </Link>
@@ -146,6 +146,6 @@ export default function Page() {
           </button>
         </div>
       </form>
-    </main>
+    </>
   );
 }
