@@ -1,9 +1,50 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { CameraFill, PencilSquare } from "react-bootstrap-icons";
 
 export default function ProfilPage() {
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) return;
+
+    fetch("http://127.0.0.1:8000/api/user", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (res) => {
+        if (!res.ok) throw new Error("Gagal mengambil data user");
+        const data = await res.json();
+        setUser(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen text-gray-500">
+        Memuat data profil...
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center h-screen text-red-500">
+        Gagal memuat data user.
+      </div>
+    );
+  }
+
   return (
     <main
       className="flex-1 overflow-y-auto p-6 space-y-4 relative pb-48"
@@ -19,11 +60,10 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src="/maman.jpg"
+            src={user.foto || "/maman.jpg"}
             alt="Foto Profil"
             className="w-28 h-28 rounded-full object-cover border"
           />
-          {/* Tombol ubah foto */}
           <label
             htmlFor="fotoProfil"
             className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow cursor-pointer hover:bg-blue-700 transition"
@@ -35,16 +75,12 @@ export default function ProfilPage() {
 
         {/* Nama */}
         <div className="text-left">
-          <label
-            htmlFor="nama"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Nama Lengkap
           </label>
           <input
             type="text"
-            id="nama"
-            value="Maman RPL"
+            value={user.name || ""}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -52,16 +88,12 @@ export default function ProfilPage() {
 
         {/* Email */}
         <div className="text-left">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Email
           </label>
           <input
             type="email"
-            id="email"
-            value="maman@example.com"
+            value={user.email || ""}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -69,16 +101,12 @@ export default function ProfilPage() {
 
         {/* Jenis Kelamin */}
         <div className="text-left">
-          <label
-            htmlFor="gender"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Jenis Kelamin
           </label>
           <input
             type="text"
-            id="gender"
-            value="Laki-laki"
+            value={user.gender || "Belum diisi"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -86,16 +114,12 @@ export default function ProfilPage() {
 
         {/* Wali Kelas */}
         <div className="text-left">
-          <label
-            htmlFor="walikelas"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Wali Kelas
           </label>
           <input
             type="text"
-            id="walikelas"
-            value="Bu Siti"
+            value={user.wali_kelas || "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -104,31 +128,23 @@ export default function ProfilPage() {
         {/* Kelas & Jurusan */}
         <div className="flex gap-4 text-left">
           <div className="flex-1">
-            <label
-              htmlFor="kelas"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Kelas
             </label>
             <input
               type="text"
-              id="kelas"
-              value="XII RPL B"
+              value={user.kelas || "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
           </div>
           <div className="flex-1">
-            <label
-              htmlFor="jurusan"
-              className="block text-sm font-medium text-gray-700 mb-1"
-            >
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Jurusan
             </label>
             <input
               type="text"
-              id="jurusan"
-              value="Rekayasa Perangkat Lunak"
+              value={user.jurusan || "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
@@ -137,16 +153,12 @@ export default function ProfilPage() {
 
         {/* Password */}
         <div className="text-left">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Password
           </label>
           <div className="relative">
             <input
               type="password"
-              id="password"
               value="********"
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700 pr-10"
@@ -161,10 +173,9 @@ export default function ProfilPage() {
         </div>
 
         <p className="text-gray-500 text-sm text-center">
-          Perubahan mengenai data diatas yang tidak bisa diubah silahkan hubungi wali kelas
+          Perubahan mengenai data di atas yang tidak bisa diubah silahkan hubungi wali kelas
         </p>
 
-        {/* Tombol */}
         <div className="flex justify-end">
           <Link
             href="/siswa/saya"
