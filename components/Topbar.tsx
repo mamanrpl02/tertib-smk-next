@@ -20,7 +20,7 @@ export default function Topbar() {
     } else if (token) {
       // kalau user belum disimpan di localStorage, ambil dari API
       axios
-        .get("/api/user", {
+        .get("/api/siswa", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
@@ -28,7 +28,7 @@ export default function Topbar() {
           localStorage.setItem("user", JSON.stringify(res.data));
         })
         .catch(() => {
-          console.warn("Gagal memuat data user.");
+          console.warn("Gagal memuat data siswa.");
         });
     }
   }, []);
@@ -55,12 +55,12 @@ export default function Topbar() {
       setLoading(false);
     }
   };
-  
+
   return (
     <header className="flex items-center justify-between bg-white shadow px-6 py-3">
       <span className="font-bold text-lg">Tertib SMK</span>
 
-      <div className="hidden md:block w-1/2 text-center">
+      <div className="hidden md:block w-1/2 ">
         <span className="font-bold text-lg">Beranda</span>
       </div>
 
@@ -68,7 +68,7 @@ export default function Topbar() {
         <Link href="/siswa/saya/pengaturan/">
           <div className="flex items-center gap-3">
             <span className="hidden md:block font-medium">
-              {/* {user ? `Hello, ${user.name}` : "Memuat..."} */} Hallo, Maman
+              {user ? `Hallo, ${user.nama}` : "Memuat..."}
             </span>
             <img
               src="/maman.jpg"

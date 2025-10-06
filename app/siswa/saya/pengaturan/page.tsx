@@ -5,23 +5,23 @@ import { useEffect, useState } from "react";
 import { CameraFill, PencilSquare } from "react-bootstrap-icons";
 
 export default function ProfilPage() {
-  const [user, setUser] = useState<any>(null);
+  const [siswa, setSiswa] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-
     if (!token) return;
 
-    fetch("http://127.0.0.1:8000/api/user", {
+    fetch("http://127.0.0.1:8000/api/siswa", {
       headers: {
         Authorization: `Bearer ${token}`,
+        Accept: "application/json",
       },
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error("Gagal mengambil data user");
+        if (!res.ok) throw new Error("Gagal mengambil data siswa");
         const data = await res.json();
-        setUser(data);
+        setSiswa(data);
       })
       .catch((err) => {
         console.error(err);
@@ -37,10 +37,10 @@ export default function ProfilPage() {
     );
   }
 
-  if (!user) {
+  if (!siswa) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
-        Gagal memuat data user.
+        Gagal memuat data siswa.
       </div>
     );
   }
@@ -60,7 +60,7 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src={user.foto || "/maman.jpg"}
+            src={siswa.foto || "/maman.jpg"}
             alt="Foto Profil"
             className="w-28 h-28 rounded-full object-cover border"
           />
@@ -73,14 +73,14 @@ export default function ProfilPage() {
           </label>
         </div>
 
-        {/* Nama */}
+        {/* Nama Lengkap */}
         <div className="text-left">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Nama Lengkap
           </label>
           <input
             type="text"
-            value={user.name || ""}
+            value={siswa.nama || ""}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -93,7 +93,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="email"
-            value={user.email || ""}
+            value={siswa.email || ""}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -106,7 +106,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="text"
-            value={user.gender || "Belum diisi"}
+            value={siswa.gender || "Belum diisi"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -119,7 +119,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="text"
-            value={user.wali_kelas || "-"}
+            value={siswa.wali_kelas || "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -133,7 +133,7 @@ export default function ProfilPage() {
             </label>
             <input
               type="text"
-              value={user.kelas || "-"}
+              value={siswa.kelas || "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
@@ -144,7 +144,7 @@ export default function ProfilPage() {
             </label>
             <input
               type="text"
-              value={user.jurusan || "-"}
+              value={siswa.jurusan || "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
@@ -173,7 +173,8 @@ export default function ProfilPage() {
         </div>
 
         <p className="text-gray-500 text-sm text-center">
-          Perubahan mengenai data di atas yang tidak bisa diubah silahkan hubungi wali kelas
+          Perubahan data di atas yang tidak bisa diubah silakan hubungi wali
+          kelas.
         </p>
 
         <div className="flex justify-end">

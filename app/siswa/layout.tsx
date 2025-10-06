@@ -15,37 +15,35 @@ export default function SiswaLayout({
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+  const [siswa, setSiswa] = useState<any>(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
     if (!token) {
-      router.push("/login");
+      router.replace("/login");
       return;
     }
 
-    // ✅ Cek token ke backend (endpoint Laravel /api/user)
-    fetch("http://127.0.0.1:8000/api/user", {
+    // 🔒 Verifikasi token ke backend Laravel
+    fetch("http://127.0.0.1:8000/api/siswa", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then(async (res) => {
-        if (!res.ok) {
-          throw new Error("Token invalid");
-        }
+        if (!res.ok) throw new Error("Token invalid");
         const data = await res.json();
-        setUser(data);
+        setSiswa(data);
       })
       .catch(() => {
         localStorage.removeItem("token");
-        router.push("/login");
+        router.replace("/login");
       })
       .finally(() => setLoading(false));
   }, [router]);
 
-  if (loading || !user) {
+  if (loading) {
     return (
       <div className="flex items-center justify-center h-screen bg-gray-50">
         <div className="text-gray-600 text-lg animate-pulse">Memuat...</div>
@@ -53,14 +51,12 @@ export default function SiswaLayout({
     );
   }
 
-  if (!user) return null; // jika user belum ter-load
+  if (!siswa) return null;
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      {/* Topbar dengan nama user */}
       <Topbar />
 
-      {/* Konten utama */}
       <div className="flex flex-1 overflow-hidden">
         <SidebarLeft />
         <main
@@ -73,10 +69,7 @@ export default function SiswaLayout({
         <SidebarRight />
       </div>
 
-      {/* Bottom Navigation (mobile) */}
       <BottomNav />
-
-      {/* Tombol scroll ke atas */}
       <ScrollTopButton />
     </div>
   );

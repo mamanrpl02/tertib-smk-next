@@ -10,11 +10,11 @@ export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
-  // 🔒 Cegah akses halaman login kalau sudah ada token
+  // 🔒 Kalau sudah login, langsung lempar ke dashboard siswa
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      router.replace("/siswa/beranda"); // ganti langsung tanpa animasi
+      router.replace("/siswa/beranda");
     }
   }, [router]);
 
@@ -23,14 +23,15 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // 🔥 Login ke Laravel
-      const res = await axios.post("/login", form);
-      const { access_token } = res.data;
+      // 🔥 Login ke Laravel (pakai route /login-siswa)
+      const res = await axios.post("/login-siswa", form);
+      const { access_token, siswa } = res.data;
 
-      // ✅ Simpan token
+      // ✅ Simpan token dan data siswa di localStorage
       localStorage.setItem("token", access_token);
+      localStorage.setItem("user", JSON.stringify(siswa));
 
-      // ✅ Redirect ke halaman siswa
+      // ✅ Arahkan ke halaman utama siswa
       router.push("/siswa/beranda");
     } catch (error: any) {
       console.error("Login gagal:", error);
@@ -55,9 +56,12 @@ export default function LoginPage() {
       <div className="flex flex-1 flex-col justify-center items-center p-6 bg-blue-500">
         <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
           <div className="text-center mb-6">
-            <h1 className="text-2xl font-bold">Selamat datang di Tertib-SMK!</h1>
+            <h1 className="text-2xl font-bold">
+              Selamat datang di Tertib-SMK!
+            </h1>
             <p className="text-sm mt-2 text-gray-600">
-              Laporkan teman anda yang melanggar tata tertib sekolah dengan aman.
+              Laporkan teman anda yang melanggar tata tertib sekolah dengan
+              aman.
             </p>
           </div>
 
