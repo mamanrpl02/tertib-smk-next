@@ -68,7 +68,7 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src={siswa.foto || "/maman.jpg"} // ✅ fallback default
+            src={siswa.foto || ""} // ✅ fallback default
             alt="Foto Profil"
             className="w-28 h-28 rounded-full object-cover border"
           />
@@ -80,120 +80,120 @@ export default function ProfilPage() {
             <input type="file" id="fotoProfil" className="hidden" />
           </label>
         </div>
+      </form>
 
-        {/* Nama Lengkap */}
-        <div className="text-left">
+      {/* Nama Lengkap */}
+      <div className="text-left">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Nama Lengkap
+        </label>
+        <input
+          type="text"
+          value={siswa.nama || "-"}
+          readOnly
+          className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+        />
+      </div>
+
+      {/* Email */}
+      <div className="text-left">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Email
+        </label>
+        <input
+          type="email"
+          value={siswa.email || "-"}
+          readOnly
+          className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+        />
+      </div>
+
+      {/* Jenis Kelamin */}
+      <div className="text-left">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Jenis Kelamin
+        </label>
+        <input
+          type="text"
+          value={siswa.jenis_kelamin || "Belum diisi"}
+          readOnly
+          className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+        />
+      </div>
+
+      {/* Kelas & Jurusan */}
+      <div className="flex gap-4 text-left">
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nama Lengkap
+            Kelas
           </label>
           <input
             type="text"
-            value={siswa.nama || ""}
+            value={siswa.kelas ?? "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
         </div>
-
-        {/* Email */}
-        <div className="text-left">
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Email
-          </label>
-          <input
-            type="email"
-            value={siswa.email || ""}
-            readOnly
-            className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
-          />
-        </div>
-
-        {/* Jenis Kelamin */}
-        <div className="text-left">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Jenis Kelamin
+            Jurusan
           </label>
           <input
             type="text"
-            value={siswa.jenis_kelamin || "Belum diisi"}
+            value={siswa.jurusan ?? "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
         </div>
+      </div>
 
-        {/* Kelas & Jurusan */}
-        <div className="flex gap-4 text-left">
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Kelas
-            </label>
-            <input
-              type="text"
-              value={siswa.kelas ?? "-"}
-              readOnly
-              className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
-            />
-          </div>
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Jurusan
-            </label>
-            <input
-              type="text"
-              value={siswa.jurusan ?? "-"}
-              readOnly
-              className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
-            />
-          </div>
-        </div>
+      {/* Wali Kelas */}
+      <div className="text-left">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Wali Kelas
+        </label>
+        <input
+          type="text"
+          value={siswa.wali_kelas ?? "-"}
+          readOnly
+          className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+        />
+      </div>
 
-        {/* Wali Kelas */}
-        <div className="text-left">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Wali Kelas
-          </label>
+      {/* Password */}
+      <div className="text-left">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Password
+        </label>
+        <div className="relative">
           <input
-            type="text"
-            value={siswa.wali_kelas ?? "-"}
+            type="password"
+            value="********"
             readOnly
-            className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+            className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700 pr-10"
           />
-        </div>
-
-        {/* Password */}
-        <div className="text-left">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Password
-          </label>
-          <div className="relative">
-            <input
-              type="password"
-              value="********"
-              readOnly
-              className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700 pr-10"
-            />
-            <Link
-              href="/siswa/saya/pengaturan/ubah-password"
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-blue-600 hover:text-blue-800"
-            >
-              <PencilSquare className="text-lg" />
-            </Link>
-          </div>
-        </div>
-
-        <p className="text-gray-500 text-sm text-center">
-          Perubahan data di atas yang tidak bisa diubah silakan hubungi wali
-          kelas.
-        </p>
-
-        <div className="flex justify-end">
           <Link
-            href="/siswa/saya"
-            className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm"
+            href="/siswa/saya/pengaturan/ubah-password"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-blue-600 hover:text-blue-800"
           >
-            Kembali
+            <PencilSquare className="text-lg" />
           </Link>
         </div>
-      </form>
+      </div>
+
+      <p className="text-gray-500 text-sm text-center">
+        Perubahan data di atas yang tidak bisa diubah silakan hubungi wali
+        kelas.
+      </p>
+
+      <div className="flex justify-end">
+        <Link
+          href="/siswa/saya"
+          className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition text-sm"
+        >
+          Kembali
+        </Link>
+      </div>
     </main>
   );
 }
