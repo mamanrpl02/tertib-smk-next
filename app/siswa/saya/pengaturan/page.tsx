@@ -2,11 +2,18 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CameraFill, PencilSquare } from "react-bootstrap-icons";
+import Swal from "sweetalert2";
+import {
+  CameraFill,
+  PencilSquare,
+  CheckCircleFill,
+} from "react-bootstrap-icons";
 
 export default function ProfilPage() {
   const [siswa, setSiswa] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [popup, setPopup] = useState(false); // ✅ state untuk popup sukses
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -22,7 +29,6 @@ export default function ProfilPage() {
         if (!res.ok) throw new Error("Gagal mengambil data siswa");
         const data = await res.json();
 
-        // ✅ Perbaikan foto profile path
         setSiswa({
           ...data,
           foto:
@@ -36,6 +42,75 @@ export default function ProfilPage() {
       .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
+
+  // ✅ Fungsi upload foto tanpa tombol submit
+  const handleFotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    const formData = new FormData();
+    formData.append("foto", file);
+
+    setUploading(true);
+
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/siswa/update-foto", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setSiswa((prev: any) => ({ ...prev, foto: data.foto }));
+        Swal.fire({
+          title: "Foto berhasil diperbarui! 🎉",
+          text: "Jangan bosen bosen yah untuk laporin temen yang bandel",
+          icon: "success",
+          confirmButtonText: "Oke",
+          confirmButtonColor: "#2563eb", // biru Tailwind
+          background: "#ffffff",
+          color: "#1f2937",
+          showClass: {
+            popup: `
+            animate__animated
+            animate__fadeInDown
+          `,
+          },
+          hideClass: {
+            popup: `
+            animate__animated
+            animate__fadeOutUp
+          `,
+          },
+        }).then(() => {
+          // window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Gagal!",
+          text: data.message || "Terjadi kesalahan.",
+          icon: "error",
+          confirmButtonText: "Coba Lagi",
+        });
+      }
+    } catch (err) {
+      Swal.fire({
+        title: "Error!",
+        text: "Tidak dapat terhubung ke server.",
+        icon: "error",
+        confirmButtonText: "Tutup",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -64,20 +139,31 @@ export default function ProfilPage() {
       </div>
 
       {/* Form Profil */}
-      <form className="space-y-6 bg-white p-6 rounded-lg shadow text-center">
+      <form className="space-y-6 bg-white p-6 rounded-lg shadow text-center relative">
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src={siswa.foto || "/maman.jpg"} // ✅ fallback default
+            src={siswa.foto || ""}
             alt="Foto Profil"
-            className="w-28 h-28 rounded-full object-cover border"
+            className={`w-28 h-28 rounded-full object-cover border ${
+              uploading ? "opacity-50" : ""
+            }`}
           />
           <label
             htmlFor="fotoProfil"
             className="absolute bottom-0 right-0 bg-blue-600 text-white p-2 rounded-full shadow cursor-pointer hover:bg-blue-700 transition"
           >
-            <CameraFill className="text-sm" />
-            <input type="file" id="fotoProfil" className="hidden" />
+            {uploading ? (
+              <span className="text-xs animate-pulse">...</span>
+            ) : (
+              <CameraFill className="text-sm" />
+            )}
+            <input
+              type="file"
+              id="fotoProfil"
+              className="hidden"
+              onChange={handleFotoChange}
+            />
           </label>
         </div>
 
@@ -88,7 +174,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="text"
-            value={siswa.nama || ""}
+            value={siswa.nama || "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -101,7 +187,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="email"
-            value={siswa.email || ""}
+            value={siswa.email || "-"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
