@@ -21,11 +21,19 @@ export default function ProfilPage() {
       .then(async (res) => {
         if (!res.ok) throw new Error("Gagal mengambil data siswa");
         const data = await res.json();
-        setSiswa(data);
+
+        // ✅ Perbaikan foto profile path
+        setSiswa({
+          ...data,
+          foto:
+            data.foto && data.foto.startsWith("http")
+              ? data.foto
+              : data.foto
+              ? `http://127.0.0.1:8000/storage/${data.foto}`
+              : null,
+        });
       })
-      .catch((err) => {
-        console.error(err);
-      })
+      .catch((err) => console.error(err))
       .finally(() => setLoading(false));
   }, []);
 
@@ -60,7 +68,7 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src={siswa.foto || "/maman.jpg"}
+            src={siswa.foto || "/maman.jpg"} // ✅ fallback default
             alt="Foto Profil"
             className="w-28 h-28 rounded-full object-cover border"
           />
@@ -106,20 +114,7 @@ export default function ProfilPage() {
           </label>
           <input
             type="text"
-            value={siswa.gender || "Belum diisi"}
-            readOnly
-            className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
-          />
-        </div>
-
-        {/* Wali Kelas */}
-        <div className="text-left">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Wali Kelas
-          </label>
-          <input
-            type="text"
-            value={siswa.wali_kelas || "-"}
+            value={siswa.jenis_kelamin || "Belum diisi"}
             readOnly
             className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
           />
@@ -133,7 +128,7 @@ export default function ProfilPage() {
             </label>
             <input
               type="text"
-              value={siswa.kelas || "-"}
+              value={siswa.kelas ?? "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
@@ -144,11 +139,24 @@ export default function ProfilPage() {
             </label>
             <input
               type="text"
-              value={siswa.jurusan || "-"}
+              value={siswa.jurusan ?? "-"}
               readOnly
               className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
             />
           </div>
+        </div>
+
+        {/* Wali Kelas */}
+        <div className="text-left">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Wali Kelas
+          </label>
+          <input
+            type="text"
+            value={siswa.wali_kelas ?? "-"}
+            readOnly
+            className="w-full border rounded-lg p-2 bg-gray-100 text-gray-700"
+          />
         </div>
 
         {/* Password */}
