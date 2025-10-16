@@ -77,69 +77,70 @@ export default function Hero() {
       {/* About Section */}
       <About />
 
-      {/* Footer Section */}
-      <footer className="relative bg-gradient-to-br from-[#5C84B5] via-[#6D94C5] to-[#CBDCEB] text-white pt-20 pb-10 mt-0 overflow-hidden">
-        {/* Wave separator */}
-        <div className="absolute -top-[60px] left-0 w-full overflow-hidden leading-[0] rotate-180">
-          <svg
-            className="relative block w-[calc(100%+1.3px)] h-[60px]"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1200 120"
-            preserveAspectRatio="none"
-          >
-            <path
-              d="M985.66 83.59C906.67 48.92 823.78 29.06 739.68 21.85 625.66 11.48 512.67 28.44 398.71 52.49 285.15 76.38 170.94 106.26 57.56 99.16c-19.57-1.25-39.13-3.63-57.56-7.55v128h1200V0c-70.49 32.92-147.83 60.12-214.34 83.59z"
-              fill="#f9f8f6"
-            ></path>
-          </svg>
-        </div>
 
         {/* Footer Content */}
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-10 relative z-10">
-          {/* Brand */}
-          <div>
-            <h2 className="text-2xl font-bold mb-3">TertibSMK</h2>
-            <p className="text-blue-100 text-sm leading-relaxed">
-              Membangun karakter siswa dengan sistem pelaporan digital yang transparan dan mudah digunakan.
-            </p>
-          </div>
+     <footer className="relative bg-gradient-to-br from-[#5C84B5] via-[#6D94C5] to-[#CBDCEB] text-white pt-20 pb-10 mt-0 overflow-hidden">
+  {/* Wave separator */}
+  <div className="absolute -top-[60px] left-0 w-full overflow-hidden leading-[0] rotate-180">
+    <svg
+      className="relative block w-[calc(100%+1.3px)] h-[60px]"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1200 120"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M985.66 83.59C906.67 48.92 823.78 29.06 739.68 21.85 625.66 11.48 512.67 28.44 398.71 52.49 285.15 76.38 170.94 106.26 57.56 99.16c-19.57-1.25-39.13-3.63-57.56-7.55v128h1200V0c-70.49 32.92-147.83 60.12-214.34 83.59z"
+        fill="#f9f8f6"
+      ></path>
+    </svg>
+  </div>
 
-          {/* Navigasi */}
-          <div>
-            <h3 className="font-semibold mb-3">Navigasi</h3>
-            <ul className="space-y-2 text-blue-100 text-sm">
-              <li><a href="#">Beranda</a></li>
-              <li><a href="#">Tentang</a></li>
-              <li><a href="#">Fitur</a></li>
-              <li><a href="#">Kontak</a></li>
-            </ul>
-          </div>
+  {/* Footer Content */}
+  <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 relative z-10 text-center sm:text-left">
+    {/* Brand */}
+    <div>
+      <h2 className="text-2xl font-bold mb-3">TertibSMK</h2>
+      <p className="text-blue-100 text-sm leading-relaxed">
+        Membangun karakter siswa dengan sistem pelaporan digital yang transparan dan mudah digunakan.
+      </p>
+    </div>
 
-          {/* Kontak */}
-          <div>
-            <h3 className="font-semibold mb-3">Kontak Kami</h3>
-            <ul className="space-y-2 text-blue-100 text-sm">
-              <li>📧 info@tertibsmk.id</li>
-              <li>📞 +62 812 3456 7890</li>
-            </ul>
-          </div>
+    {/* Navigasi */}
+    <div>
+      <h3 className="font-semibold mb-3 text-lg">Navigasi</h3>
+      <ul className="space-y-2 text-blue-100 text-sm">
+        <li><a href="#" className="hover:text-blue-200 transition">Beranda</a></li>
+        <li><a href="#" className="hover:text-blue-200 transition">Tentang</a></li>
+        <li><a href="#" className="hover:text-blue-200 transition">Fitur</a></li>
+        <li><a href="#" className="hover:text-blue-200 transition">Kontak</a></li>
+      </ul>
+    </div>
 
-          {/* Sosial Media */}
-          <div>
-            <h3 className="font-semibold mb-3">Ikuti Kami</h3>
-            <div className="flex space-x-4 text-2xl">
-              <a href="#" className="hover:text-blue-200">🌐</a>
-              <a href="#" className="hover:text-blue-200">📘</a>
-              <a href="#" className="hover:text-blue-200">📷</a>
-            </div>
-          </div>
-        </div>
+    {/* Kontak */}
+    <div>
+      <h3 className="font-semibold mb-3 text-lg">Kontak Kami</h3>
+      <ul className="space-y-2 text-blue-100 text-sm">
+        <li>📧 info@tertibsmk.id</li>
+        <li>📞 +62 812 3456 7890</li>
+      </ul>
+    </div>
 
-        {/* Copyright */}
-        <div className="border-t border-blue-400/30 mt-10 pt-5 text-center text-blue-100 text-sm">
-          © 2025 <span className="font-semibold">TertibSMK</span>. Semua hak dilindungi.
-        </div>
-      </footer>
-    </>
+    {/* Sosial Media */}
+    <div>
+      <h3 className="font-semibold mb-3 text-lg">Ikuti Kami</h3>
+      <div className="flex justify-center sm:justify-start space-x-4 text-2xl">
+        <a href="#" className="hover:text-blue-200 transition">🌐</a>
+        <a href="#" className="hover:text-blue-200 transition">📘</a>
+        <a href="#" className="hover:text-blue-200 transition">📷</a>
+      </div>
+    </div>
+  </div>
+
+  {/* Copyright */}
+  <div className="border-t border-blue-400/30 mt-10 pt-5 text-center text-blue-100 text-sm">
+    © 2025 <span className="font-semibold">TertibSMK</span>. Semua hak dilindungi.
+  </div>
+</footer>
+</>
   );
 }
