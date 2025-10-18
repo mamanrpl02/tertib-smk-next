@@ -10,7 +10,6 @@ export default function Topbar() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
 
-  // Ambil nama user dari localStorage
   useEffect(() => {
     const token = localStorage.getItem("token");
     const storedUser = localStorage.getItem("user");
@@ -18,35 +17,27 @@ export default function Topbar() {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else if (token) {
-      // kalau user belum disimpan di localStorage, ambil dari API
+      // 🔹 Ambil data user dari backend
       axios
-        .get("/api/siswa", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        .get("/siswa")
         .then((res) => {
           setUser(res.data);
           localStorage.setItem("user", JSON.stringify(res.data));
         })
         .catch(() => {
-          console.warn("Gagal memuat data siswa.");
+          console.warn("Gagal memuat data siswa, logout otomatis.");
+          localStorage.removeItem("token");
+          router.replace("/login");
         });
     }
-  }, []);
+  }, [router]);
 
   const handleLogout = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("token");
-
-      await axios.post(
-        "/logout", // ✅ tanpa /api di depan
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
+      await axios.post("/logout-siswa"); // ✅ endpoint sesuai Laravel
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-
       router.push("/login");
     } catch (error: any) {
       console.error("Gagal logout:", error.response?.data || error.message);
@@ -60,7 +51,7 @@ export default function Topbar() {
     <header className="flex items-center justify-between bg-white shadow px-6 py-3">
       <span className="font-bold text-lg">Tertib SMK</span>
 
-      <div className="hidden md:block w-1/2 ">
+      <div className="hidden md:block w-1/2 text-center">
         <span className="font-bold text-lg">Beranda</span>
       </div>
 
@@ -68,10 +59,10 @@ export default function Topbar() {
         <Link href="/siswa/saya/pengaturan/">
           <div className="flex items-center gap-3">
             <span className="hidden md:block font-medium">
-              {user ? `Hallo, ${user.nama}` : "Memuat..."}
+              {user ? `Halo, ${user.nama}` : "Memuat..."}
             </span>
             <img
-              src="/maman.jpg"
+              src={user?.foto_profile ? user.foto_profile : "/maman.jpg"}
               alt="Profile"
               className="w-8 h-8 rounded-full border"
             />
