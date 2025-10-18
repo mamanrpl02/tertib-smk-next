@@ -7,6 +7,7 @@ import SidebarLeft from "@/components/SidebarLeft";
 import SidebarRight from "@/components/SidebarRight";
 import BottomNav from "@/components/BottomNav";
 import ScrollTopButton from "@/components/ScrollTopButton";
+import axios from "@/lib/axios";
 
 export default function SiswaLayout({
   children,
@@ -20,27 +21,34 @@ export default function SiswaLayout({
   useEffect(() => {
     const token = localStorage.getItem("token");
 
+    // 🔹 Jika belum login → arahkan ke /login
     if (!token) {
       router.replace("/login");
       return;
     }
 
-    // 🔒 Verifikasi token ke backend Laravel
-    fetch("http://127.0.0.1:8000/api/siswa", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then(async (res) => {
-        if (!res.ok) throw new Error("Token invalid");
-        const data = await res.json();
-        setSiswa(data);
-      })
-      .catch(() => {
+    // 🔹 Verifikasi token via Laravel API
+    const verifyToken = async () => {
+      try {
+        const res = await axios.get("/siswa"); // otomatis pakai Bearer token dari interceptor
+        setSiswa(res.data);
+
+        // Jika user sedang di /login tapi sudah login → arahkan ke beranda siswa
+        if (window.location.pathname === "/login") {
+          router.replace("/siswa/beranda");
+        }
+      } catch (error) {
+        // Token invalid → hapus token dan kembalikan ke login
+        console.warn("Token tidak valid, redirect ke login");
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         router.replace("/login");
-      })
-      .finally(() => setLoading(false));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    verifyToken();
   }, [router]);
 
   if (loading) {

@@ -4,7 +4,8 @@ import { useState, useEffect, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import axios from "../../lib/axios";
+import Swal from "sweetalert2";
+import axios from "@/lib/axios";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,14 +20,35 @@ export default function LoginPage() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    
+
     try {
-      const res = await axios.post("/login-siswa", form);
-      const { access_token, siswa } = res.data;
+      const { data } = await axios.post("/login-siswa", form);
+
+      const { access_token, siswa } = data;
+
+      // 🔹 Simpan token & user
       localStorage.setItem("token", access_token);
       localStorage.setItem("user", JSON.stringify(siswa));
+
+      // 🔹 Notifikasi berhasil
+      await Swal.fire({
+        icon: "success",
+        title: "Login Berhasil!",
+        text: `Selamat datang, ${siswa.nama}`,
+        showConfirmButton: false,
+        timer: 1500,
+      });
+
       router.push("/siswa/beranda");
     } catch (error: any) {
-      alert(error.response?.data?.message || "Email atau password salah.");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Login",
+        text: error.response?.data?.message || "Email atau password salah.",
+        confirmButtonColor: "#5C84B5",
+      });
     } finally {
       setLoading(false);
     }
@@ -34,21 +56,14 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row relative bg-[#f9fafb] overflow-hidden">
-      {/* 🔹 Logo pojok kiri atas */}
+      {/* Logo kiri atas */}
       <div className="absolute top-6 left-6 z-20">
-        <Image src="/logo.png" alt="Logo Tertib SMK" width={120} height={120} />
+        <Image src="/logo.png" alt="Logo Sekolah" width={120} height={120} />
       </div>
 
-      {/* Panel kiri - desain baru */}
+      {/* Panel kiri */}
       <div className="hidden md:flex md:w-1/2 relative bg-[#6D94C5] items-center justify-center overflow-hidden">
-        {/* Pola background halus */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,_rgba(255,255,255,0.2),_transparent_60%)]" />
-        <div className="absolute inset-0 bg-[url('/pattern-light.png')] opacity-10 mix-blend-overlay" />
-
-        {/* Lapisan warna lembut */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#5C84B5]/90 via-[#6D94C5]/70 to-[#CBDCEB]/40" />
-
-        {/* Konten tengah */}
         <div className="relative z-10 text-center px-10">
           <Image
             src="/illustration-login.png"
@@ -64,18 +79,13 @@ export default function LoginPage() {
             Akses akunmu dan bantu wujudkan budaya disiplin di sekolah.
           </p>
         </div>
-
-        {/* Dekorasi bulatan blur */}
-        <div className="absolute -bottom-20 -left-20 w-[250px] h-[250px] bg-white/10 blur-3xl rounded-full" />
-        <div className="absolute top-10 right-10 w-[180px] h-[180px] bg-white/20 blur-2xl rounded-full" />
       </div>
 
       {/* Panel kanan */}
       <div className="flex flex-1 items-center justify-center px-6 py-10">
         <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl border border-gray-100">
-          {/* Logo atas form */}
           <div className="flex justify-center mb-6">
-            <Image src="/logo.png" alt="Logo Tertib SMK" width={80} height={80} />
+            <Image src="/logo.png" alt="Logo Sekolah" width={80} height={80} />
           </div>
 
           <h2 className="text-3xl font-bold text-gray-800 mb-2 text-center">
@@ -112,19 +122,6 @@ export default function LoginPage() {
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#5C84B5] outline-none"
               />
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 text-[#5C84B5] border-gray-300 rounded"
-                />
-                <span>Ingat saya</span>
-              </label>
-              <a href="#" className="text-[#5C84B5] hover:underline">
-                Lupa password?
-              </a>
             </div>
 
             <button

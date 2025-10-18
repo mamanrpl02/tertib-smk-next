@@ -19,7 +19,7 @@ export default function ProfilPage() {
     const token = localStorage.getItem("token");
     if (!token) return;
 
-    fetch("http://127.0.0.1:8000/api/siswa", {
+    fetch("http://localhost:8000/api/siswa/profile", {
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
@@ -33,9 +33,9 @@ export default function ProfilPage() {
           ...data,
           foto:
             data.foto && data.foto.startsWith("http")
-              ? data.foto
+              ? data.foto  
               : data.foto
-              ? `http://127.0.0.1:8000/storage/${data.foto}`
+              ? `http://localhost:8000/storage/${data.foto}`
               : null,
         });
       })
@@ -57,7 +57,7 @@ export default function ProfilPage() {
     setUploading(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/siswa/update-foto", {
+      const res = await fetch("http://localhost:8000/api/siswa/update-foto", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
