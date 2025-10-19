@@ -16,8 +16,9 @@ export default function ProfilPage() {
   const [popup, setPopup] = useState(false); // ✅ state untuk popup sukses
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+    const token = localStorage.getItem("token_siswa");
+
+    console.log("Token dikirim:", token); // cek token
 
     fetch("http://localhost:8000/api/siswa/profile", {
       headers: {
@@ -26,21 +27,16 @@ export default function ProfilPage() {
       },
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error("Gagal mengambil data siswa");
-        const data = await res.json();
-
-        setSiswa({
-          ...data,
-          foto:
-            data.foto && data.foto.startsWith("http")
-              ? data.foto  
-              : data.foto
-              ? `http://localhost:8000/storage/${data.foto}`
-              : null,
-        });
+        console.log("Status:", res.status); // log status code
+        if (!res.ok) {
+          const err = await res.text();
+          console.error("Response Error:", err);
+          throw new Error("Gagal mengambil data siswa");
+        }
+        return res.json();
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .then((data) => setSiswa(data))
+      .catch((err) => console.error(err));
   }, []);
 
   // ✅ Fungsi upload foto tanpa tombol submit
@@ -48,7 +44,7 @@ export default function ProfilPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token_siswa");
     if (!token) return;
 
     const formData = new FormData();
@@ -68,10 +64,21 @@ export default function ProfilPage() {
       const data = await res.json();
 
       if (res.ok) {
-        setSiswa((prev: any) => ({ ...prev, foto: data.foto }));
+        const updatedUser = {
+          ...siswa,
+          foto_profile: data.foto + "?v=" + Date.now(),
+        };
+        setSiswa(updatedUser);
+
+        // Simpan user baru ke localStorage
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+
+        // 🔥 Kirim event agar Topbar langsung update
+        window.dispatchEvent(new Event("userUpdated"));
+
         Swal.fire({
           title: "Foto berhasil diperbarui! 🎉",
-          text: "Jangan bosen bosen yah untuk laporin temen yang bandel",
+          text: "Keren! Profil kamu makin kece.",
           icon: "success",
           confirmButtonText: "Oke",
           confirmButtonColor: "#2563eb", // biru Tailwind
@@ -112,15 +119,15 @@ export default function ProfilPage() {
     }
   };
 
-  if (loading) {
+  if (!siswa) {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-500">
-        Memuat data profil...
+      <div className="flex items-center justify-center h-screen text-shadow-blue-500">
+        Memuat Data...
       </div>
     );
   }
 
-  if (!siswa) {
+  if (!loading) {
     return (
       <div className="flex items-center justify-center h-screen text-red-500">
         Gagal memuat data siswa.
@@ -143,7 +150,7 @@ export default function ProfilPage() {
         {/* Foto Profil */}
         <div className="relative w-28 h-28 mx-auto">
           <img
-            src={siswa.foto || ""}
+            src={siswa.foto_profile || ""}
             alt="Foto Profil"
             className={`w-28 h-28 rounded-full object-cover border ${
               uploading ? "opacity-50" : ""

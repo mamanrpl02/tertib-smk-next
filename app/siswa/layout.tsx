@@ -19,7 +19,7 @@ export default function SiswaLayout({
   const [siswa, setSiswa] = useState<any>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token_siswa");
 
     // 🔹 Jika belum login → arahkan ke /login
     if (!token) {
