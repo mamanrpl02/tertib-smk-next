@@ -1,6 +1,6 @@
 "use client";
 import { FileEarmarkText, ChevronRight } from "react-bootstrap-icons";
-import Link from "next/link";
+import Link from "next/link"; 
 
 export default function ProfilPage() {
   return (
