@@ -10,33 +10,51 @@ export default function Topbar() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<any>(null);
 
+  // 🔹 Ambil user dari localStorage atau API
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token_siswa");
     const storedUser = localStorage.getItem("user");
 
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     } else if (token) {
-      // 🔹 Ambil data user dari backend
       axios
-        .get("/siswa")
+        .get("/siswa/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           setUser(res.data);
           localStorage.setItem("user", JSON.stringify(res.data));
         })
         .catch(() => {
           console.warn("Gagal memuat data siswa, logout otomatis.");
-          localStorage.removeItem("token");
+          localStorage.removeItem("token_siswa");
           router.replace("/login");
         });
     }
   }, [router]);
 
+  // 🔹 Dengarkan event perubahan profil (misal setelah upload foto)
+  useEffect(() => {
+    const handleUserUpdate = () => {
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) setUser(JSON.parse(storedUser));
+    };
+    window.addEventListener("userUpdated", handleUserUpdate);
+    return () => window.removeEventListener("userUpdated", handleUserUpdate);
+  }, []);
+  
   const handleLogout = async () => {
     setLoading(true);
     try {
-      await axios.post("/logout-siswa"); // ✅ endpoint sesuai Laravel
-      localStorage.removeItem("token");
+      await axios.post("/siswa/logout", null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token_siswa")}`,
+        },
+      });
+      localStorage.removeItem("token_siswa");
       localStorage.removeItem("user");
       router.push("/login");
     } catch (error: any) {
@@ -57,14 +75,14 @@ export default function Topbar() {
 
       <div className="flex items-center gap-4">
         <Link href="/siswa/saya/pengaturan/">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer">
             <span className="hidden md:block font-medium">
               {user ? `Halo, ${user.nama}` : "Memuat..."}
             </span>
             <img
-              src={user?.foto_profile ? user.foto_profile : "/maman.jpg"}
+              src={user?.foto_profile || "/maman.jpg"}
               alt="Profile"
-              className="w-8 h-8 rounded-full border"
+              className="w-8 h-8 rounded-full border object-cover"
             />
           </div>
         </Link>
