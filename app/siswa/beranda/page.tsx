@@ -1,90 +1,167 @@
+"use client";
+import { useEffect, useState } from "react";
+import axios from "@/lib/axios";
+
+// 🧱 Tipe data
+interface Informasi {
+  id: number;
+  nama: string;
+  deskripsi: string;
+  status: string;
+  foto_informasi: string | null;
+  valid_to: string | null;
+  created_at: string;
+}
+
+interface LaporanPelanggaran {
+  id: number;
+  deskripsi: string;
+  bukti_pelanggaran: string | null;
+  fl_toleransi: boolean;
+  status_laporan: string;
+  created_at: string;
+  pelanggaran?: {
+    nama_pelanggaran: string;
+  };
+}
+
 export default function BerandaPage() {
-  const posts = [
-    {
-      id: 1,
-      name: "A******* H****",
-      jurusan: "Rekayasa Perangkat Lunak",
-      date: "Rabu, 01-10-25",
-      time: "08:00",
-      avatar: "https://i.pravatar.cc/40?img=3",
-      image:
-        "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=800&q=80",
-      likes: 20,
-      caption: "Lagi latihan coding buat project sekolah 💻🔥",
-    },
-    {
-      id: 2,
-      name: "Dinda",
-      jurusan: "DKV",
-      date: "Kamis, 02-10-25",
-      time: "09:30",
-      avatar: "https://i.pravatar.cc/40?img=5",
-      image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80",
-      likes: 35,
-      caption: "Belajar desain UI hari ini! 🎨✨",
-    },
-    {
-      id: 3,
-      name: "Rizky",
-      jurusan: "TKJ",
-      date: "Jumat, 03-10-25",
-      time: "07:45",
-      avatar: "https://i.pravatar.cc/40?img=8",
-      image:
-        "https://images.unsplash.com/photo-1521747116042-5a810fda9664?auto=format&fit=crop&w=800&q=80",
-      likes: 15,
-      caption: "Setup jaringan lab sekolah 🖥️🔌",
-    },
-  ];
+  const [informasi, setInformasi] = useState<Informasi[]>([]);
+  const [laporan, setLaporan] = useState<LaporanPelanggaran[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPosting = async () => {
+      try {
+        const res = await axios.get("/posting");
+        setInformasi(res.data.informasi || []);
+        setLaporan(res.data.laporan_pelanggaran || []);
+      } catch (error) {
+        console.error("Gagal memuat posting:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPosting();
+  }, []);
+
+  if (loading) {
+    return <p className="text-center py-4 text-gray-500">Memuat data...</p>;
+  }
+
+  if (
+    (!informasi || informasi.length === 0) &&
+    (!laporan || laporan.length === 0)
+  ) {
+    return (
+      <p className="text-center py-4 text-gray-500">
+        Belum ada postingan saat ini.
+      </p>
+    );
+  }
 
   return (
     <>
-      {posts.map((post) => (
-        <div key={post.id} className="bg-white rounded-lg shadow">
-          {/* Header */}
+      {/* === Informasi Sekolah === */}
+      {informasi.map((item) => (
+        <div key={`info-${item.id}`} className="bg-white rounded-lg shadow mb-6">
           <div className="flex items-center px-4 py-3 border-b justify-between">
             <div className="flex items-center">
               <img
-                src={post.avatar}
-                alt={post.name}
+                src="/fotoDefault.png"
+                alt={item.nama}
                 className="w-10 h-10 rounded-full"
               />
               <div className="ml-3">
-                <p className="font-semibold">{post.name}</p>
-                <p className="text-xs text-gray-500">{post.jurusan}</p>
+                <p className="font-semibold">Admin</p>
+                <p className="text-xs text-gray-500">Informasi Sekolah</p>
               </div>
             </div>
             <div className="text-right">
-              <p className="text-xs text-gray-500">{post.date}</p>
-              <p className="text-xs text-gray-500">{post.time}</p>
+              <p className="text-xs text-gray-500">
+                {new Date(item.created_at).toLocaleString("id-ID", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
             </div>
           </div>
 
-          {/* Gambar post */}
-          <img src={post.image} alt="post" className="w-full" />
+          {item.foto_informasi && (
+            <img
+              src={`http://localhost:8000/storage/${item.foto_informasi}`}
+              alt={item.nama}
+              className="w-full"
+            />
+          )}
 
-          {/* Aksi */}
-          <div className="px-4 py-2 border-t">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <button className="flex items-center gap-1 text-gray-600 hover:text-red-500 transition">
-                  <i className="bi bi-heart text-lg"></i>
-                  <span className="text-sm">Like</span>
-                </button>
-                <button className="flex items-center gap-1 text-gray-600 hover:text-blue-500 transition">
-                  <i className="bi bi-share text-lg"></i>
-                  <span className="text-sm">Share</span>
-                </button>
-              </div>
-              <p className="text-sm text-gray-500">{post.likes} Likes</p>
-            </div>
-          </div>
-
-          {/* Caption */}
           <div className="px-4 pb-4">
-            <p className="text-sm mt-2">
-              <span className="font-semibold">{post.name}</span> {post.caption}
+            <h2 className="font-bold mt-2">{item.nama}</h2>
+            <p className="text-sm mt-1">{item.deskripsi}</p>
+          </div>
+        </div>
+      ))}
+
+      {/* === Laporan Pelanggaran === */}
+      {laporan.map((lap) => (
+        <div
+          key={`lap-${lap.id}`}
+          className="bg-white rounded-lg shadow mb-6 border border-red-200"
+        >
+          <div className="flex items-center px-4 py-3 border-b justify-between bg-red-50">
+            <div className="flex items-center">
+              <img
+                src="/warning-icon.png"
+                alt="Laporan Pelanggaran"
+                className="w-10 h-10 rounded-full"
+              />
+              <div className="ml-3">
+                <p className="font-semibold text-red-600">
+                  {lap.pelanggaran?.nama_pelanggaran || "Pelanggaran"}
+                </p>
+                <p className="text-xs text-gray-500">Laporan Pelanggaran</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-xs text-gray-500">
+                {new Date(lap.created_at).toLocaleString("id-ID", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  day: "2-digit",
+                  month: "long",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+          </div>
+
+          {lap.bukti_pelanggaran && (
+            <img
+              src={`http://localhost:8000/storage/${lap.bukti_pelanggaran}`}
+              alt="Bukti Pelanggaran"
+              className="w-full"
+            />
+          )}
+
+          <div className="px-4 pb-4">
+            <p className="text-sm mt-2">{lap.deskripsi}</p>
+            <p className="text-xs text-gray-500 mt-2">
+              Status:{" "}
+              <span
+                className={
+                  lap.status_laporan === "approved"
+                    ? "text-green-600"
+                    : lap.status_laporan === "pending"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+                }
+              >
+                {lap.status_laporan}
+              </span>
             </p>
           </div>
         </div>
